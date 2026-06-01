@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>The Living Nutrition Lab - High-End Architectural Showcase</title>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+</head>
+<body>
+    <script>
+        // --- IMMERSIVE NUTRITION KNOWLEDGE BASE ---
+        const lessonPhases = [
+            {
+                title: "PHASE 1: Balanced Diet Foundations",
+                focusText: "Concept: Defining a Balanced Diet",
+                details: "A balanced diet naturally integrates structural options from all main food groups in precise physiological ratios. This pattern ensures your body receives necessary macronutrients, vitamins, and minerals for optimal cellular repair and systemic energy management without strict starvation restriction.",
+                color: "#27ae60"
+            },
+            {
+                title: "PHASE 2: Core Metrics Decoded",
+                focusText: "Concept: Healthy vs. Unhealthy Profiles",
+                details: "Analyze basic modern health classifications:\n• Healthy Food: Nutrients that support biological repair and low systemic inflammation (e.g., Spinach, Avocado, Beans, Snoek).\n• Unhealthy Food: Highly refined structures that alter glucose spikes and add dense saturated trans-fats (e.g., Soda, Fat Cakes).",
+                color: "#2980b9"
+            },
+            {
+                title: "PHASE 3: Caloric Density Vectors",
+                focusText: "Concept: Energy, Nutrient, & Empty Calories",
+                details: "Examine high-level calorie compositions:\n• Nutrient-Dense: High micronutrients relative to energy mass (Spinach).\n• Energy-Dense: High caloric payload relative to volume (Avocado).\n• Empty Calorie: High simple sugar concentrations completely devoid of fiber or active mineral chains (Soda).",
+                color: "#ff007f"
+            },
+            {
+                title: "PHASE 4: Modern Food Processing",
+                focusText: "Concept: Fast Food, Processed, & Organic",
+                details: "Deconstruct how food is handled commercially:\n• Fast Food: Commercial combinations prioritized for fast preparation speed (Kota).\n• Processed Food: Altered raw states to safely preserve shelf-life or target cultures (Yoghurt).\n• Organic Food: Natural cultivation free from chemical synthetic inputs.",
+                color: "#9b59b6"
+            },
+            {
+                title: "PHASE 5: Food Group Taxonomy",
+                focusText: "Concept: Sweets, Vegetables, and Fats",
+                details: "Every staple anchors a core food lineage. Match items to cross-examine group properties:\n• Sweets Group: Energy delivery vectors via fast-acting simple carbohydrates.\n• Vegetables Group: High-fiber cell structures providing crucial daily vitamins.\n• Fats Group: Essential lipid molecules critical for hormone health and brain protection.",
+                color: "#f1c40f"
+            },
+            {
+                title: "PHASE 6: Food Group Taxonomy",
+                focusText: "Concept: Dairy, Carbohydrates, and Proteins",
+                details: "Complete your macro mapping sequences:\n• Dairy Group: Provides rich bioavailable calcium matrices and essential probiotic strains.\n• Carbs Group: Glucose energy supply lines including grains, starches, and tubers.\n• Proteins Group: Fundamental amino acid chains required for muscular growth and rebuilding.",
+                color: "#1abc9c"
+            },
+            {
+                title: "PHASE 7: Portion Size Mastery",
+                focusText: "Concept: Hand Measurements for Weight Control",
+                details: "How do you handle portion boundaries without mechanical scales? Click a basin plate to unlock rules:\n• Vegetables: Half your plate (Size of your closed fist)\n• Proteins: Quarter plate (Thickness and width of an open palm)\n• Carbs: Quarter plate (Volume of a single cupped hand)\n• Fats/Sweets: Sparingly (Size of your thumb tip)",
+                color: "#e67e22"
+            }
+        ];
+
+        const nutritionDatabase = {
+            "Sweets": { 
+                definition: "Empty Calorie / Unhealthy: Fast-acting sugars and solid saturated trans-fats completely empty of natural fiber or mineral chains (e.g., Soda Can).", 
+                portionTip: "Portion Habit (Q9): Treat as occasional luxury items. Single active serving volumes should never exceed the precise size of your thumb tip." 
+            },
+            "Vegetables": { 
+                definition: "Nutrient-Dense / Healthy / Organic: Packed with natural cellular antioxidants, active micronutrients, and high dietary fiber at low energy weights (e.g., Organic Spinach).", 
+                portionTip: "Portion Habit (Q9): Target filling 50% of your total primary plate. A single portion should match the absolute volume of your closed fist." 
+            },
+            "Fats": { 
+                definition: "Energy-Dense Food: High caloric payload relative to physical mass. Differentiates sharply between healthy raw plant lipids (Avocado) and deep-fried items (Fat Cakes).", 
+                portionTip: "Portion Habit (Q9): Vital for hormone production, but use carefully. Limit extracted oils to roughly one single teaspoon volume per preparation session." 
+            },
+            "Dairy": { 
+                definition: "Processed Food Source: Real dairy structures safely pasteurized or fermented (like plain cultured yoghurt) to preserve high calcium profiles and live bacteria cultures.", 
+                portionTip: "Portion Habit (Q9): Aim for one single compact tub or cup volume (handful size) per active serving block. Avoid hidden flavored syrups." 
+            },
+            "Carbs": { 
+                definition: "Staple Carbohydrates / Fast Food Primary glucose fuel source. Ranges from high-fiber complex whole grains (Mageu) to layered commercial fast food setups (Traditional Kota).", 
+                portionTip: "Portion Habit (Q9): Should occupy exactly 25% of a healthy plate matrix. Keep your starches strictly limited to the volume of a single cupped hand." 
+            },
+            "Proteins": { 
+                definition: "Nutrient-Dense Building Blocks: Amino acid combinations necessary for organic muscle tissue reconstruction, cellular repair, and optimal enzyme function (e.g., Snoek, Chicken, Beans).", 
+                portionTip: "Portion Habit (Q9): Should occupy 25% of your total plate configuration. Serving thickness and area should match your flat open palm." 
+            }
+        };
+
+        // --- REAL-TIME FUNCTIONING CLOCK COMPONENT ENGINE ---
+        AFRAME.registerComponent('analogue-clock', {
+            init: function () {
+                this.hourHand = this.el.querySelector('#clock-hour-hand');
+                this.minuteHand = this.el.querySelector('#clock-minute-hand');
+                this.secondHand = this.el.querySelector('#clock-second-hand');
+            },
+            tick: function () {
+                const now = new Date();
+                const hours = now.getHours();
+                const minutes = now.getMinutes();
+                const seconds = now.getSeconds();
+
+                // Calculate rotational degree positions based on standard 360 unit divisions
+                const secondDeg = seconds * 6; 
+                const minuteDeg = (minutes * 6) + (seconds * 0.1);
+                const hourDeg = (hours * 30) + (minutes * 0.5);
+
+                // Update properties across the 3D target nodes natively
+                if (this.secondHand) this.secondHand.setAttribute('rotation', `0 0 ${-secondDeg}`);
+                if (this.minuteHand) this.minuteHand.setAttribute('rotation', `0 0 ${-minuteDeg}`);
+                if (this.hourHand) this.hourHand.setAttribute('rotation', `0 0 ${-hourDeg}`);
+            }
+        });
+
+        // --- CORE SESSION LOGIC SYSTEM ---
+        AFRAME.registerComponent('laboratory-manager', {
+            init: function () {
+                this.currentPhase = 0;
+                this.selectedFood = null;
+                this.foods = [];
+                this.plates = [];
+                this.originalPositions = new Map();
+                
+                this.el.sceneEl.querySelectorAll('.food').forEach(el => {
+                    this.foods.push(el);
+                    const pos = el.getAttribute('position');
+                    this.originalPositions.set(el, {x: parseFloat(pos.x), y: parseFloat(pos.y), z: parseFloat(pos.z)});
+                });
+                this.el.sceneEl.querySelectorAll('.plate').forEach(el => this.plates.push(el));
+
+                this.updateUI();
+                this.bindEvents();
+            },
+
+            bindEvents: function () {
+                const boardTitle = document.querySelector('#board-title');
+                const boardBody = document.querySelector('#board-body');
+
+                this.foods.forEach(food => {
+                    food.addEventListener('click', () => {
+                        if (this.selectedFood) {
+                            this.selectedFood.removeAttribute('animation__hover');
+                            this.selectedFood.setAttribute('scale', '1 1 1');
+                        }
+                        
+                        this.selectedFood = food;
+                        this.selectedFood.setAttribute('animation__hover', {
+                            property: 'scale',
+                            to: '1.15 1.15 1.15',
+                            dir: 'alternate',
+                            dur: 400,
+                            loop: true
+                        });
+
+                        const name = food.getAttribute('data-name');
+                        const group = food.getAttribute('data-group');
+                        
+                        boardTitle.setAttribute('value', `Analyzing: ${name}`);
+                        boardTitle.setAttribute('color', '#e67e22');
+                        boardBody.setAttribute('value', `Nutritional Group: ${group}\n\nAction Required:\nSelect and click the matching marble collection basin across the main counter to cross-reference data.`);
+                    });
+                });
+
+                this.plates.forEach(plate => {
+                    plate.addEventListener('click', () => {
+                        const targetGroup = plate.getAttribute('data-category');
+
+                        if (this.selectedFood) {
+                            const originalGroup = this.selectedFood.getAttribute('data-group');
+                            
+                            if (targetGroup === originalGroup) {
+                                const platePos = plate.getAttribute('position');
+                                const rx = (Math.random() - 0.5) * 0.15;
+                                const rz = (Math.random() - 0.5) * 0.15;
+                                
+                                this.selectedFood.removeAttribute('animation__hover');
+                                this.selectedFood.setAttribute('scale', '1 1 1');
+                                this.selectedFood.setAttribute('position', {
+                                    x: parseFloat(platePos.x) + rx,
+                                    y: parseFloat(platePos.y) + 0.06,
+                                    z: parseFloat(platePos.z) + rz
+                                });
+                                
+                                boardTitle.setAttribute('value', `Success: ${targetGroup} Validated`);
+                                boardTitle.setAttribute('color', '#27ae60');
+                                
+                                const content = nutritionDatabase[targetGroup];
+                                if (this.currentPhase === 1 || this.currentPhase === 2 || this.currentPhase === 3) {
+                                    boardBody.setAttribute('value', `Terminology Metric (Q3):\n${content.definition}`);
+                                } else if (this.currentPhase === 6) {
+                                    boardBody.setAttribute('value', `Portion Control Metric (Q9):\n${content.portionTip}`);
+                                } else {
+                                    boardBody.setAttribute('value', `Analysis Master:\n${content.definition}\n\n${content.portionTip}`);
+                                }
+                                
+                                this.selectedFood = null;
+                            } else {
+                                const foodName = this.selectedFood.getAttribute('data-name');
+                                boardTitle.setAttribute('value', "Classification Error");
+                                boardTitle.setAttribute('color', '#c0392b');
+                                boardBody.setAttribute('value', `"${foodName}" does not map to the biochemical or physiological profile assigned to the ${targetGroup} basin.`);
+                            }
+                        } else {
+                            boardTitle.setAttribute('value', `${targetGroup} Category Profile`);
+                            boardTitle.setAttribute('color', '#2980b9');
+                            const content = nutritionDatabase[targetGroup];
+                            boardBody.setAttribute('value', `Definition:\n${content.definition}\n\n${content.portionTip}`);
+                        }
+                    });
+                });
+
+                document.querySelector('#btn-next').addEventListener('click', () => {
+                    this.currentPhase = (this.currentPhase + 1) % lessonPhases.length;
+                    this.updateUI();
+                });
+
+                document.querySelector('#btn-reset').addEventListener('click', () => {
+                    this.foods.forEach(food => {
+                        food.removeAttribute('animation__hover');
+                        food.setAttribute('scale', '1 1 1');
+                        food.setAttribute('position', this.originalPositions.get(food));
+                    });
+                    this.selectedFood = null;
+                    this.updateUI();
+                });
+            },
+
+            updateUI: function () {
+                const phase = lessonPhases[this.currentPhase];
+                document.querySelector('#panel-header').setAttribute('value', phase.title);
+                document.querySelector('#panel-subheader').setAttribute('value', phase.focusText);
+                document.querySelector('#panel-subheader').setAttribute('color', phase.color);
+                
+                document.querySelector('#board-title').setAttribute('value', phase.focusText);
+                document.querySelector('#board-title').setAttribute('color', phase.color);
+                document.querySelector('#board-body').setAttribute('value', phase.details);
+            }
+        });
+    </script>
+
+    <a-scene laboratory-manager cursor="rayOrigin: mouse" shadow="type: pcfsoft">
+        
+        <a-sky color="#1a1c24"></a-sky>
+        <a-entity light="type: ambient; color: #cbd5e1; intensity: 0.4"></a-entity>
+        <a-entity light="type: directional; color: #fba567; intensity: 1.2; castShadow: true; shadowMapHeight: 2048; shadowMapWidth: 2048; shadowCameraNear: 0.5; shadowCameraFar: 40; shadowCameraLeft: -12; shadowCameraRight: 12; shadowCameraTop: 12; shadowCameraBottom: -12;" position="-15 6 8"></a-entity>
+        <a-entity light="type: directional; color: #94a3b8; intensity: 0.4;" position="5 12 -4"></a-entity>
+
+        <a-plane position="0 -0.2 -15" rotation="-90 0 0" width="80" height="60" color="#14191f" roughness="0.9"></a-plane>
+        
+        <a-box position="0 -0.15 -10" width="16" height="0.1" depth="6" color="#0e2433" roughness="0.01" metalness="0.5">
+            <a-box position="0 -0.04 0" width="15.8" height="0.01" depth="5.8" color="#14b8a6" material="shader: flat; opacity: 0.3"></a-box>
+        </a-box>
+        <a-box position="0 -0.05 -7" width="16.4" height="0.2" depth="0.4" color="#2d3748" roughness="0.6"></a-box>
+        
+        <a-box position="-10 -0.05 -15" width="4" height="0.3" depth="8" color="#1c2421" roughness="0.9"></a-box>
+        <a-cylinder position="-10 2.5 -15" radius="0.08" height="5" color="#2d3748" roughness="0.8">
+            <a-sphere position="0 2.5 0" radius="0.8" color="#14532d" scale="1 0.3 1"></a-sphere>
+        </a-cylinder>
+        <a-box position="10 -0.05 -15" width="4" height="0.3" depth="8" color="#1c2421" roughness="0.9"></a-box>
+        <a-cylinder position="10 2.5 -15" radius="0.08" height="5" color="#2d3748" roughness="0.8">
+            <a-sphere position="0 2.5 0" radius="0.8" color="#14532d" scale="1 0.3 1"></a-sphere>
+        </a-cylinder>
+
+        <a-box position="-18 8 -32" width="5" height="22" depth="4" color="#090d16" roughness="0.9"></a-box>
+        <a-box position="-12 12 -35" width="4" height="32" depth="4" color="#070a10" roughness="0.9"></a-box>
+        <a-box position="14 10 -34" width="6" height="26" depth="5" color="#090d16" roughness="0.9"></a-box>
+        <a-box position="22 7 -30" width="4" height="18" depth="4" color="#05070b" roughness="0.9"></a-box>
+
+        <a-entity id="luxury-marble-floor">
+            <a-plane position="-3.01 0 0" rotation="-90 0 0" width="6" height="16" color="#f8fafc" roughness="0.05" metalness="0.1" shadow="receive: true"></a-plane>
+            <a-plane position="3.01 0 0" rotation="-90 0 0" width="6" height="16" color="#f1f5f9" roughness="0.06" metalness="0.1" shadow="receive: true"></a-plane>
+            <a-box position="-6.01 0.002 0" width="0.08" height="0.001" depth="16" color="#0f172a" material="shader: flat"></a-box>
+            <a-box position="6.01 0.002 0" width="0.08" height="0.001" depth="16" color="#0f172a" material="shader: flat"></a-box>
+        </a-entity>
+
+        <a-box id="luxury-feature-backwall" position="0 4 -4.8" width="12.2" height="8" depth="0.2" color="#1e293b" roughness="0.7" shadow="receive: true">
+            <a-box position="0 3.8 0.12" width="12.2" height="0.04" depth="0.04" color="#451a03" roughness="0.5"></a-box>
+            <a-box position="0 3.4 0.12" width="12.2" height="0.04" depth="0.04" color="#451a03" roughness="0.5"></a-box>
+            <a-box position="0 3.0 0.12" width="12.2" height="0.04" depth="0.04" color="#451a03" roughness="0.5"></a-box>
+            <a-box position="0 2.6 0.12" width="12.2" height="0.04" depth="0.04" color="#451a03" roughness="0.5"></a-box>
+        </a-box>
+
+        <a-entity analogue-clock id="luxury-wall-clock" position="5.1 5.5 -4.68" rotation="0 0 0">
+            <a-cylinder rotation="90 0 0" radius="0.48" height="0.02" color="#ca8a04" metalness="0.8" roughness="0.1"></a-cylinder>
+            <a-cylinder rotation="90 0 0" radius="0.45" height="0.022" position="0 0 0.002" color="#020617" roughness="0.4"></a-cylinder>
+            
+            <a-box position="0 0.38 0.015" width="0.02" height="0.08" depth="0.01" color="#f8fafc" material="shader: flat"></a-box>
+            <a-box position="0.38 0 0.015" width="0.08" height="0.02" depth="0.01" color="#f8fafc" material="shader: flat"></a-box>
+            <a-box position="0 -0.38 0.015" width="0.02" height="0.08" depth="0.01" color="#f8fafc" material="shader: flat"></a-box>
+            <a-box position="-0.38 0 0.015" width="0.08" height="0.02" depth="0.01" color="#f8fafc" material="shader: flat"></a-box>
+
+            <a-entity id="clock-hour-hand" position="0 0 0.02">
+                <a-box position="0 0.12 0" width="0.025" height="0.24" depth="0.005" color="#ca8a04" metalness="0.7"></a-box>
+            </a-entity>
+            <a-entity id="clock-minute-hand" position="0 0 0.022">
+                <a-box position="0 0.18 0" width="0.016" height="0.36" depth="0.005" color="#f8fafc" material="shader: flat"></a-box>
+            </a-entity>
+            <a-entity id="clock-second-hand" position="0 0 0.024">
+                <a-box position="0 0.2 0" width="0.008" height="0.4" depth="0.002" color="#dc2626" material="shader: flat"></a-box>
+            </a-entity>
+            <a-sphere position="0 0 0.028" radius="0.02" color="#ca8a04" metalness="0.8"></a-sphere>
+        </a-entity>
+
+        <a-box position="-6.1 4 0" width="0.2" height="8" depth="16" color="#f8fafc" roughness="0.4">
+            <a-box position="0.12 1.8 -2" width="0.3" height="2.4" depth="2.2" color="#2d1910" roughness="0.6">
+                <a-box position="0 0.4 0" width="0.28" height="0.02" depth="2.18" color="#4a2511"></a-box>
+                <a-box position="0 -0.4 0" width="0.28" height="0.02" depth="2.18" color="#4a2511"></a-box>
+                <a-cone position="0 0.6 0" radius-bottom="0.1" radius-top="0.01" height="0.25" color="#d4ac0d" metalness="0.8" roughness="0.2"></a-cone>
+            </a-box>
+        </a-box>
+
+        <a-entity id="panoramic-curtain-glass">
+            <a-box position="6.1 4 0" width="0.2" height="8" depth="0.2" color="#0f172a" metalness="0.5"></a-box>
+            <a-box position="6.1 4 -5" width="0.2" height="8" depth="0.12" color="#0f172a" metalness="0.5"></a-box>
+            <a-box position="6.1 4 5" width="0.2" height="8" depth="0.12" color="#0f172a" metalness="0.5"></a-box>
+            <a-box position="6.1 7.9 0" width="0.2" height="0.2" depth="16.2" color="#1e293b" metalness="0.7" roughness="0.2"></a-box>
+            <a-plane position="5.98 4 0" rotation="0 -90 0" width="16" height="8" color="#e2e8f0" opacity="0.1" material="transparent: true; roughness: 0.01; metalness: 0.9; side: double;"></a-plane>
+        </a-entity>
+
+        <a-box position="0 8.05 0" width="12.4" height="0.1" depth="16.4" color="#090d16" roughness="0.9"></a-box>
+        <a-box position="0 7.85 0" width="11.4" height="0.2" depth="14.8" color="#f8fafc" roughness="0.5">
+            <a-box position="0 -0.101 0" width="11.2" height="0.01" depth="14.6" color="#ffedd5" material="shader: flat; opacity: 0.15"></a-box>
+        </a-box>
+
+        <a-box position="-3.5 7.65 0" width="0.08" height="0.2" depth="14.4" color="#451a03" roughness="0.6"></a-box>
+        <a-box position="-1.5 7.65 0" width="0.08" height="0.2" depth="14.4" color="#451a03" roughness="0.6"></a-box>
+        <a-box position="1.5 7.65 0" width="0.08" height="0.2" depth="14.4" color="#451a03" roughness="0.6"></a-box>
+        <a-box position="3.5 7.65 0" width="0.08" height="0.2" depth="14.4" color="#451a03" roughness="0.6"></a-box>
+
+        <a-entity id="gourmet-cabinetry-wall" position="0 0 -4.6">
+            <a-box position="0 0.46 0.15" width="11.8" height="0.92" depth="0.6" color="#0f172a" roughness="0.4" shadow="cast: true; receive: true">
+                <a-box position="0 0.45 0.31" width="11.8" height="0.02" depth="0.01" color="#020617" material="shader: flat"></a-box>
+                <a-box position="0 0.02 0.31" width="11.8" height="0.02" depth="0.01" color="#020617" material="shader: flat"></a-box>
+                <a-box position="-2.5 0.65 0.32" width="0.4" height="0.02" depth="0.02" color="#ca8a04" metalness="0.8" roughness="0.1"></a-box>
+                <a-box position="2.5 0.65 0.32" width="0.4" height="0.02" depth="0.02" color="#ca8a04" metalness="0.8" roughness="0.1"></a-box>
+            </a-box>
+            <a-box position="0 0.94 0.15" width="11.8" height="0.04" depth="0.62" color="#f8fafc" roughness="0.08" shadow="receive: true"></a-box>
+            
+            <a-box position="0 2.8 0.25" width="11.8" height="1.4" depth="0.4" color="#3b2314" roughness="0.5" shadow="cast: true">
+                <a-box position="0 -0.71 0" width="11.6" height="0.01" depth="0.36" color="#fef08a" material="shader: flat; opacity: 0.4"></a-box>
+            </a-box>
+        </a-entity>
+
+        <a-entity id="mansion-appliances" position="-4.5 0 -4.4">
+            <a-box position="0 1.1 0.2" width="1.4" height="2.2" depth="0.65" color="#94a3b8" metalness="0.8" roughness="0.15" shadow="cast: true">
+                <a-box position="-0.04 0.4 0.33" width="0.03" height="0.9" depth="0.03" color="#475569" metalness="0.9"></a-box>
+                <a-box position="0.04 0.4 0.33" width="0.03" height="0.9" depth="0.03" color="#475569" metalness="0.9"></a-box>
+            </a-box>
+            <a-box position="1.4 1.1 0.15" width="0.8" height="2.2" depth="0.6" color="#0f172a" roughness="0.3">
+                <a-box position="0 1.4 0.31" width="0.68" height="0.45" depth="0.01" color="#1e293b" metalness="0.9" roughness="0.01"></a-box>
+                <a-box position="0 0.7 0.31" width="0.68" height="0.45" depth="0.01" color="#1e293b" metalness="0.9" roughness="0.01"></a-box>
+            </a-box>
+        </a-entity>
+
+        <a-entity id="marble-waterfall-island" position="0 0 -2.5">
+            <a-box position="0 0.88 0" width="7.5" height="0.08" depth="1.5" color="#fdfefe" roughness="0.04" metalness="0.1" shadow="cast: true; receive: true"></a-box>
+            <a-box position="-3.71 0.44 0" width="0.08" height="0.88" depth="1.5" color="#f8fafc" roughness="0.04" metalness="0.1" shadow="cast: true"></a-box>
+            <a-box position="3.71 0.44 0" width="0.08" height="0.88" depth="1.5" color="#f8fafc" roughness="0.04" metalness="0.1" shadow="cast: true"></a-box>
+            <a-box position="0 0.4 0" width="7.3" height="0.8" depth="1.38" color="#020617" roughness="0.5">
+                <a-box position="0 0.2 0.7" width="7.32" height="0.03" depth="0.01" color="#ca8a04" metalness="0.8" roughness="0.1" material="shader:flat;"></a-box>
+            </a-box>
+        </a-entity>
+
+        <a-box position="0 0.72 -0.5" width="3.4" height="0.08" depth="1.3" color="#27160c" roughness="0.32" shadow="cast: true; receive: true"></a-box>
+        <a-box position="-1.6 0.32 -0.1" width="0.05" height="0.72" depth="0.05" color="#475569" metalness="0.8" roughness="0.2"></a-box>
+        <a-box position="1.6 0.32 -0.1" width="0.05" height="0.72" depth="0.05" color="#475569" metalness="0.8" roughness="0.2"></a-box>
+        <a-box position="-1.6 0.32 -1.1" width="0.05" height="0.72" depth="0.05" color="#475569" metalness="0.8" roughness="0.2"></a-box>
+        <a-box position="1.6 0.32 -1.1" width="0.05" height="0.72" depth="0.05" color="#475569" metalness="0.8" roughness="0.2"></a-box>
+
+        <a-entity id="ui-tv-wrapper" position="0 3.32 -2.75">
+            <a-box width="5.48" height="2.68" depth="0.12" color="#0a0f14" metalness="0.8" roughness="0.15" shadow="cast: true"></a-box>
+            
+            <a-box id="ui-glassboard" position="0 0 0.05" width="5.4" height="2.6" depth="0.01" color="#03070a" opacity="1.0" roughness="0.05" metalness="0.3">
+                <a-box position="0 1.08 0.01" width="5.4" height="0.36" depth="0.005" color="#111827" material="shader: flat"></a-box>
+                <a-box position="0 0.89 0.01" width="5.4" height="0.02" depth="0.005" color="#10b981" material="shader: flat"></a-box>
+                
+                <a-text id="panel-header" value="" align="center" position="0 1.08 0.02" width="4.5" color="#34d399" wrap-count="36"></a-text>
+                <a-text id="panel-subheader" value="" align="center" position="0 0.62 0.02" width="4" wrap-count="42"></a-text>
+                <a-text id="board-title" position="0 0.22 0.02" value="" align="center" width="4.5" wrap-count="36"></a-text>
+                <a-text id="board-body" position="0 -0.08 0.02" value="" align="center" baseline="top" width="4.2" wrap-count="50" color="#f8fafc"></a-text>
+            </a-box>
+
+            <a-plane position="0 0 0.06" width="5.4" height="2.6" color="#ffffff" opacity="0.02" material="transparent: true; roughness: 0.02; metalness: 0.95; side: double;"></a-plane>
+
+            <a-sphere position="2.64 -1.28 0.065" radius="0.012" color="#ef4444" material="shader: flat; emissive: #ef4444; emissiveIntensity: 2;"></a-sphere>
+        </a-entity>
+
+        <a-entity id="open-plan-lounge" position="-4.5 0 3.5" rotation="0 45 0">
+            <a-box position="0 0.22 0" width="2.4" height="0.44" depth="0.9" color="#475569" roughness="0.6">
+                <a-box position="0 0.42 -0.38" width="2.4" height="0.4" depth="0.14" color="#334155" roughness="0.6"></a-box>
+            </a-box>
+            <a-box position="0 0.18 0.9" width="1.1" height="0.36" depth="0.7" color="#0f172a" roughness="0.06" metalness="0.2" shadow="cast: true">
+                <a-box position="0 0.185 0" width="0.4" height="0.01" depth="0.3" color="#ca8a04" metalness="0.8" roughness="0.1"></a-box>
+            </a-box>
+            <a-cylinder position="1.4 0.28 -0.4" radius="0.22" height="0.56" color="#e2e8f0" roughness="0.3">
+                <a-sphere position="0 0.6 0" radius="0.45" color="#166534" scale="0.8 1.4 0.8"></a-sphere>
+            </a-cylinder>
+        </a-entity>
+
+        <a-entity id="open-plan-dining" position="3.8 0 3.2" rotation="0 -30 0">
+            <a-box position="0 0.74 0" width="2.6" height="0.06" depth="1.1" color="#1c1917" roughness="0.5" shadow="cast: true; receive: true">
+                <a-box position="0 0.031 0" width="2.62" height="0.001" depth="0.04" color="#ca8a04" material="shader:flat;"></a-box>
+            </a-box>
+            <a-box position="-1.0 0.37 0" width="0.1" height="0.74" depth="0.8" color="#0c0a09" roughness="0.3"></a-box>
+            <a-box position="1.0 0.37 0" width="0.1" height="0.74" depth="0.8" color="#0c0a09" roughness="0.3"></a-box>
+            
+            <a-box position="-0.6 0.44 0.7" width="0.4" height="0.48" depth="0.4" color="#64748b" roughness="0.7">
+                <a-box position="0 0.42 0.18" width="0.4" height="0.44" depth="0.05" color="#475569"></a-box>
+            </a-box>
+            <a-box position="0.6 0.44 0.7" width="0.4" height="0.48" depth="0.4" color="#64748b" roughness="0.7">
+                <a-box position="0 0.42 0.18" width="0.4" height="0.44" depth="0.05" color="#475569"></a-box>
+            </a-box>
+            <a-cylinder position="0 3.5 0" radius="0.01" height="3.5" color="#ca8a04" metalness="0.8">
+                <a-cone position="0 -1.75 0" radius-bottom="0.24" radius-top="0.02" height="0.22" color="#1e293b" metalness="0.5">
+                    <a-sphere position="0 -0.11 0" radius="0.08" color="#fff" material="shader: flat"></a-sphere>
+                </a-cone>
+            </a-cylinder>
+        </a-entity>
+
+        <a-entity id="avatar-instructor" position="0 0.85 -3.8" shadow="cast: true">
+            <a-cylinder height="0.9" radius="0.15" color="#334155" roughness="0.4"></a-cylinder> 
+            <a-sphere position="0 0.62 0" radius="0.12" color="#e2b48d"></a-sphere> 
+            <a-box position="0 0.46 0.12" width="0.22" height="0.04" depth="0.22" color="#f8fafc" material="shader: flat"></a-box> 
+       
+
+            <a-text value="Nutrition Lead" align="center" position="0 0.95 0" color="#f8fafc" width="1.2" wrap-count="12"></a-text>
+        </a-entity>
+
+        
+
+        <a-entity position="0 0.01 1.8">
+            <a-ring color="#38bdf8" radius-inner="0.35" radius-outer="0.38" rotation="-90 0 0" opacity="0.8" material="shader: flat"></a-ring>
+            <a-entity position="-0.11 0 0" rotation="-90 0 0">
+                <a-ellipse radius-x="0.045" radius-y="0.11" color="#f8fafc" opacity="0.9"></a-ellipse>
+                <a-ellipse radius-x="0.035" radius-y="0.06" position="0 -0.05 0.001" color="#cbd5e1"></a-ellipse>
+            </a-entity>
+            <a-entity position="0.11 0 0" rotation="-90 0 0">
+                <a-ellipse radius-x="0.045" radius-y="0.11" color="#f8fafc" opacity="0.9"></a-ellipse>
+                <a-ellipse radius-x="0.035" radius-y="0.06" position="0 -0.05 0.001" color="#cbd5e1"></a-ellipse>
+            </a-entity>
+        </a-entity>
+
+        <a-entity id="rig" position="0 0 1.8">
+            <a-camera position="0 1.6 0"></a-camera>
+            <a-entity laser-controls="hand: left" raycaster="objects: .clickable"></a-entity>
+            <a-entity laser-controls="hand: right" raycaster="objects: .clickable"></a-entity>
+        </a-entity>
+
+        <a-cylinder class="clickable plate" data-category="Sweets" position="-2.5 0.93 -2.5" radius="0.4" height="0.02" color="#fff1f2" roughness="0.06" shadow="cast:true; receive:true">
+            <a-cylinder radius="0.4" height="0.005" position="0 0.01 0" color="#f43f5e" opacity="0.15" material="shader: flat"></a-cylinder>
+            <a-text value="Sweets" align="center" position="0 0.28 0" color="#f43f5e" width="1" wrap-count="12"></a-text>
+        </a-cylinder>
+        
+        <a-cylinder class="clickable plate" data-category="Vegetables" position="-1.5 0.93 -2.5" radius="0.4" height="0.02" color="#f0fdf4" roughness="0.06" shadow="cast:true; receive:true">
+            <a-cylinder radius="0.4" height="0.005" position="0 0.01 0" color="#22c55e" opacity="0.15" material="shader: flat"></a-cylinder>
+            <a-text value="Vegetables" align="center" position="0 0.28 0" color="#22c55e" width="1" wrap-count="12"></a-text>
+        </a-cylinder>
+        
+        <a-cylinder class="clickable plate" data-category="Fats" position="-0.5 0.93 -2.5" radius="0.4" height="0.02" color="#fefce8" roughness="0.06" shadow="cast:true; receive:true">
+            <a-cylinder radius="0.4" height="0.005" position="0 0.01 0" color="#eab308" opacity="0.15" material="shader: flat"></a-cylinder>
+            <a-text value="Fats" align="center" position="0 0.28 0" color="#eab308" width="1" wrap-count="12"></a-text>
+        </a-cylinder>
+        
+        <a-cylinder class="clickable plate" data-category="Dairy" position="0.5 0.93 -2.5" radius="0.4" height="0.02" color="#f0f9ff" roughness="0.06" shadow="cast:true; receive:true">
+            <a-cylinder radius="0.4" height="0.005" position="0 0.01 0" color="#0ea5e9" opacity="0.15" material="shader: flat"></a-cylinder>
+            <a-text value="Dairy" align="center" position="0 0.28 0" color="#0ea5e9" width="1" wrap-count="12"></a-text>
+        </a-cylinder>
+        
+        <a-cylinder class="clickable plate" data-category="Carbs" position="1.5 0.93 -2.5" radius="0.4" height="0.02" color="#fff7ed" roughness="0.06" shadow="cast:true; receive:true">
+            <a-cylinder radius="0.4" height="0.005" position="0 0.01 0" color="#f97316" opacity="0.15" material="shader: flat"></a-cylinder>
+            <a-text value="Carbs" align="center" position="0 0.28 0" color="#f97316" width="1" wrap-count="12"></a-text>
+        </a-cylinder>
+        
+        <a-cylinder class="clickable plate" data-category="Proteins" position="2.5 0.93 -2.5" radius="0.4" height="0.02" color="#faf5ff" roughness="0.06" shadow="cast:true; receive:true">
+            <a-cylinder radius="0.4" height="0.005" position="0 0.01 0" color="#a855f7" opacity="0.15" material="shader: flat"></a-cylinder>
+            <a-text value="Proteins" align="center" position="0 0.28 0" color="#a855f7" width="1" wrap-count="12"></a-text>
+        </a-cylinder>
+
+        <a-cylinder class="clickable food" data-name="Carbonated Soda Can" data-group="Sweets" position="-1.1 0.84 -0.2" radius="0.05" height="0.16" color="#dc2626" roughness="0.12" metalness="0.7" shadow="cast: true">
+            <a-text value="Soda" align="center" position="0 0.13 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-cylinder>
+        <a-box class="clickable food" data-name="Organic Spinach Bunch" data-group="Vegetables" position="-0.55 0.77 -0.2" width="0.22" height="0.05" depth="0.16" color="#14532d" roughness="0.95" shadow="cast: true">
+            <a-text value="Spinach" align="center" position="0 0.1 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-box>
+        <a-cylinder class="clickable food" data-name="Traditional Fat Cake" data-group="Fats" position="0 0.77 -0.2" radius="0.09" height="0.06" color="#ca8a04" roughness="0.7" shadow="cast: true">
+            <a-text value="Fat Cake" align="center" position="0 0.1 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-cylinder>
+        <a-box class="clickable food" data-name="Cultured Plain Yoghurt" data-group="Dairy" position="0.55 0.8 -0.2" width="0.14" height="0.12" depth="0.14" color="#f8fafc" roughness="0.2" shadow="cast: true">
+            <a-box position="0 0.061 0" width="0.142" height="0.01" depth="0.142" color="#2563eb" material="shader: flat"></a-box>
+            <a-text value="Yoghurt" align="center" position="0 0.11 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-box>
+        <a-box class="clickable food" data-name="Traditional Street Kota" data-group="Carbs" position="1.1 0.8 -0.2" width="0.18" height="0.14" depth="0.18" color="#b45309" roughness="0.54" shadow="cast: true">
+            <a-text value="Kota" align="center" position="0 0.12 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-box>
+        <a-box class="clickable food" data-name="Organic Dried Beans" data-group="Proteins" position="-1.1 0.77 -0.7" width="0.16" height="0.06" depth="0.2" color="#7c2d12" roughness="0.8" shadow="cast: true">
+            <a-text value="Beans" align="center" position="0 0.1 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-box>
+        <a-box class="clickable food" data-name="Cured Salted Snoek" data-group="Proteins" position="-0.55 0.76 -0.7" width="0.08" height="0.03" depth="0.28" color="#64748b" roughness="0.25" metalness="0.3" shadow="cast: true">
+            <a-text value="Snoek" align="center" position="0 0.1 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-box>
+        <a-box class="clickable food" data-name="Lean Chicken Breast" data-group="Proteins" position="0 0.78 -0.7" width="0.13" height="0.09" depth="0.18" color="#fbcfe8" roughness="0.5" shadow="cast: true">
+            <a-text value="Chicken" align="center" position="0 0.11 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-box>
+        <a-sphere class="clickable food" data-name="Fresh Organic Avocado" data-group="Fats" position="0.55 0.78 -0.7" radius="0.08" color="#14532d" roughness="0.85" shadow="cast: true">
+            <a-text value="Avocado" align="center" position="0 0.12 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-sphere>
+        <a-cylinder class="clickable food" data-name="Traditional Mageu Carton" data-group="Carbs" position="1.1 0.81 -0.7" radius="0.06" height="0.15" color="#fef08a" roughness="0.34" shadow="cast: true">
+            <a-text value="Mageu" align="center" position="0 0.12 0" color="#ffffff" width="0.4" wrap-count="10"></a-text>
+        </a-cylinder>
+
+        <a-box id="btn-next" class="clickable" position="3.1 1.0 -1.3" width="0.9" height="0.26" depth="0.1" color="#16a34a" roughness="0.1">
+            <a-text value="NEXT LESSON" align="center" position="0 0 0.06" color="#FFF" width="0.9" wrap-count="12"></a-text>
+        </a-box>
+
+        <a-box id="btn-reset" class="clickable" position="3.1 0.6 -1.3" width="0.9" height="0.26" depth="0.1" color="#ea580c" roughness="0.1">
+            <a-text value="RESET BOARD" align="center" position="0 0 0.06" color="#FFF" width="0.9" wrap-count="12"></a-text>
+        </a-box>
+
+    </a-scene>
+</body>
+</html>
